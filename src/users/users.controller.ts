@@ -8,17 +8,17 @@ import { User } from './interfaces/user.interface';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post()
+  @Post('signup')
   async signUp(@Body() signUpDto: SignUpDto) {
     this.usersService.create(signUpDto);
   }
 
-  @Post()
+  @Post('signin')
   async signIn(@Body() signInDto: SignInDto) {
     this.usersService.signIn(signInDto);
   }
 
-  @Get()
+  @Get('all')
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
