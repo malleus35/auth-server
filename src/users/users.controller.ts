@@ -18,9 +18,29 @@ export class UsersController {
     // this.usersService.delete(token);
   }
 
-  @Post('signin')
-  async signIn(@Body() signInDto: SignInDto) {
+  @Post('signin/local')
+  async signInLocal(@Body() signInDto: SignInDto) {
     this.usersService.signIn(signInDto);
+  }
+
+  @Post('signin/google')
+  async signInGoogle() {
+    // this.usersService.signInGoogle();
+  }
+
+  @Post('signin/facebook')
+  async signInFacebook() {
+    // this.usersService.signInFacebook();
+  }
+
+  @Post('signin/kakao')
+  async signInKakao() {
+    // this.usersService.signInKakao();
+  }
+
+  @Post('signin/naver')
+  async signInNaver() {
+    // this.usersService.signInNaver();
   }
 
   @Post('logout')
@@ -34,6 +54,11 @@ export class UsersController {
     @Headers('refresh') refresh: string,
   ) {
     // this.usersService.refresh(token, refresh);
+  }
+
+  @Get('one')
+  async findOne(@Headers('authorization') token: string) {
+    // this.usersService.findOne(token);
   }
 
   @Get('all')
