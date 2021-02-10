@@ -10,7 +10,7 @@ export class UsersController {
 
   @Post()
   async signUp(@Body() user: User) {
-    this.usersService.create(user);
+    await this.usersService.create(user);
   }
 
   @Delete()
@@ -20,7 +20,7 @@ export class UsersController {
 
   @Post('signin/local')
   async signInLocal(@Body() user: User) {
-    this.usersService.signIn(user);
+    await this.usersService.signIn(user);
   }
 
   @Post('signin/google')
@@ -68,6 +68,6 @@ export class UsersController {
 
   @Get('all')
   async findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+    return await this.usersService.findAll();
   }
 }

@@ -10,19 +10,19 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  signIn(user: User) {
-    this.usersRepository.create(user);
+  async signIn(user: User): Promise<void> {
+    await this.usersRepository.save(user);
   }
 
-  create(user: User) {
-    this.usersRepository.create(user);
+  async create(user: User): Promise<void> {
+    await this.usersRepository.save(user);
   }
 
-  findOne(idx: string): Promise<User> {
-    return this.usersRepository.findOne(idx);
+  async findOne(idx: string): Promise<User> {
+    return await this.usersRepository.findOne(idx);
   }
 
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async findAll(): Promise<User[]> {
+    return await this.usersRepository.find();
   }
 }
