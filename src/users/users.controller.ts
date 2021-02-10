@@ -28,6 +28,11 @@ export class UsersController {
     // this.usersService.signInGoogle();
   }
 
+  @Post('signin/github')
+  async signInGithub() {
+    // this.usersService.signInGoogle();
+  }
+
   @Post('signin/facebook')
   async signInFacebook() {
     // this.usersService.signInFacebook();
