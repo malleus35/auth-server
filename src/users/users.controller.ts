@@ -2,15 +2,15 @@ import { Body, Controller, Get, Post, Headers, Delete } from '@nestjs/common';
 import { SignInDto } from './dto/SignInDto';
 import { SignUpDto } from './dto/SignUpDto';
 import { UsersService } from './users.service';
-import { User } from './interfaces/user.interface';
+import { User } from './user.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Post()
-  async signUp(@Body() signUpDto: SignUpDto) {
-    this.usersService.create(signUpDto);
+  async signUp(@Body() user: User) {
+    this.usersService.create(user);
   }
 
   @Delete()
@@ -19,8 +19,8 @@ export class UsersController {
   }
 
   @Post('signin/local')
-  async signInLocal(@Body() signInDto: SignInDto) {
-    this.usersService.signIn(signInDto);
+  async signInLocal(@Body() user: User) {
+    this.usersService.signIn(user);
   }
 
   @Post('signin/google')
