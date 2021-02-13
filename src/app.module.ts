@@ -31,6 +31,6 @@ import { AuthService } from './auth/auth.service';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AuthService],
+  providers: [AppService],
 })
 export class AppModule {}
