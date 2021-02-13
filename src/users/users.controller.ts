@@ -64,7 +64,7 @@ export class UsersController {
     @Headers('authorization') token: string,
     @Body() idx: number,
   ): Promise<User> {
-    return this.usersService.findOne(idx);
+    return this.usersService.findById(idx);
   }
 
   @Get('all')

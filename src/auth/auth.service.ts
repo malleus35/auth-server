@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { SignInDto } from 'src/users/dto/SignInDto';
 import { User } from 'src/users/user.entity';
 import { UsersService } from '../users/users.service';
 @Injectable()
@@ -9,14 +10,12 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<User> {
-    const idx = 1;
-    const user = await this.usersService.findOne(username);
-    console.log(user);
-    if (user && user.password === password) {
+  async validateUser(signInDto: SignInDto): Promise<User> {
+    const user = await this.usersService.findOne(signInDto);
+    if (user && user.pwd === signInDto.pwd) {
       //crypto module logic will be added
-      const { pwd, ...result } = user;
-      return result;
+      // const { pwd, ...result } = user;
+      return user;
     }
     return null;
     // return user;
