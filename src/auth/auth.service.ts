@@ -12,7 +12,8 @@ export class AuthService {
 
   async validateUser(signInDto: SignInDto): Promise<User> {
     const user = await this.usersService.findOne(signInDto);
-    if (user && user.pwd === signInDto.pwd) {
+    if (user) {
+      //&& user.pwd === signInDto.pwd
       //crypto module logic will be added
       // const { pwd, ...result } = user;
       return user;
@@ -21,8 +22,9 @@ export class AuthService {
     // return user;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(userInfo: SignInDto) {
+    const user = await this.usersService.findOne(userInfo);
+    const payload = { idx: user.idx };
     return {
       access_token: this.jwtService.sign(payload),
     };
