@@ -62,9 +62,9 @@ export class UsersController {
   @Get('one')
   async findOne(
     @Headers('authorization') token: string,
-    @Body() idx: number,
+    @Body() id: string,
   ): Promise<User> {
-    return this.usersService.findById(idx);
+    return this.usersService.findById(id);
   }
 
   @Get('all')
