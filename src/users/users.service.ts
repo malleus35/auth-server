@@ -17,8 +17,10 @@ export class UsersService {
     await this.usersRepository.save(user);
   }
 
-  findOne(idx: number): Promise<User> {
-    return this.usersRepository.findOne(idx);
+  async findOne(idx: number): Promise<User> {
+    const test = await this.usersRepository.findOne(idx);
+    console.log(test);
+    return await this.usersRepository.findOne(idx);
   }
 
   findAll(): Promise<User[]> {
