@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { toUserDto } from 'src/shared/mapper';
 import { Repository } from 'typeorm';
 import { SignInDto } from './dto/SignInDto';
+import { SignUpDto } from './dto/SignUpDto';
 import { UserDto } from './dto/UserDto';
 import { User } from './user.entity';
 
@@ -11,12 +12,40 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
-  async signIn(user: User): Promise<void> {
+  async signIn({ email, pwd, name }: SignUpDto): Promise<UserDto> {
+    // check if the user exists in the db
+    const userInDb = await this.usersRepository.findOne({
+      where: { email },
+    });
+    if (userInDb) {
+      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+    }
+
+    const user: User = await this.usersRepository.create({
+      email,
+      pwd,
+      name,
+    });
     await this.usersRepository.save(user);
+    return toUserDto(user);
   }
-  async create(user: User): Promise<void> {
+  async create({ email, pwd, name }: SignUpDto): Promise<UserDto> {
+    const userInDb = await this.usersRepository.findOne({
+      where: { email },
+    });
+    if (userInDb) {
+      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+    }
+
+    const user: User = await this.usersRepository.create({
+      email,
+      pwd,
+      name,
+    });
     await this.usersRepository.save(user);
+    return toUserDto(user);
   }
+
   async findById(id: string): Promise<UserDto> {
     const user = await this.usersRepository.findOne(id);
     return toUserDto(user);
