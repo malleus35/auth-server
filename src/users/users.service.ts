@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { toUserDto } from 'src/shared/mapper';
 import { Repository } from 'typeorm';
@@ -22,11 +22,30 @@ export class UsersService {
     return toUserDto(user);
   }
 
-  async findOne(signInDto: SignInDto): Promise<UserDto> {
+  async findByLogin({ email, pwd }: SignInDto): Promise<UserDto> {
     const user = await this.usersRepository.findOne({
-      where: { email: signInDto.email },
+      where: { email },
     });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+    }
+
+    // compare passwords
+    // const areEqual = await comparePasswords(user.pwd, pwd);
+    const areEqual = user.pwd === pwd;
+
+    if (!areEqual) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
     return toUserDto(user);
+  }
+
+  async findByPayload({ email }: any): Promise<UserDto> {
+    return await this.usersRepository.findOne({
+      where: { email },
+    });
   }
 
   findAll(): Promise<UserDto[]> {
