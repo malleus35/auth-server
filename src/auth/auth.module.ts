@@ -19,7 +19,6 @@ import { LocalStrategy } from './local.strategy';
         signOptions: {
           expiresIn: '12h',
           issuer: configService.get('jwt.issuer'),
-          audience: configService.get('jwt.audience'),
         },
       }),
     }),
