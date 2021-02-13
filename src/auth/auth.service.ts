@@ -12,6 +12,7 @@ export class AuthService {
 
   async validateUser(signInDto: SignInDto): Promise<User> {
     const user = await this.usersService.findOne(signInDto);
+    console.log(user);
     if (user) {
       //&& user.pwd === signInDto.pwd
       //crypto module logic will be added

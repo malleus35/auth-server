@@ -15,7 +15,7 @@ import { SignInDto } from './users/dto/SignInDto';
 export class AppController {
   constructor(private readonly authService: AuthService) {}
 
-  // @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Body() userInfo: SignInDto) {
     console.log(userInfo);
