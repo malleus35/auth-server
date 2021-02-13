@@ -1,44 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { toUserDto } from 'src/shared/mapper';
 import { Repository } from 'typeorm';
-// import { User } from './user.entity';
-
-export type User = any;
+import { SignInDto } from './dto/SignInDto';
+import { UserDto } from './dto/UserDto';
+import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-  // constructor() {} // @InjectRepository(User) private usersRepository: Repository<User>,
-
-  // async signIn(user: User): Promise<void> {
-  //   await this.usersRepository.save(user);
-  // }
-
-  // async create(user: User): Promise<void> {
-  //   await this.usersRepository.save(user);
-  // }
-
-  // async findOne(idx: number): Promise<User> {
-  //   const test = await this.usersRepository.findOne(idx);
-  //   console.log(test);
-  //   return await this.usersRepository.findOne(idx);
-  // }
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  constructor(
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
+  ) {}
+  async signIn(user: User): Promise<void> {
+    await this.usersRepository.save(user);
+  }
+  async create(user: User): Promise<void> {
+    await this.usersRepository.save(user);
+  }
+  async findById(id: string): Promise<UserDto> {
+    const user = await this.usersRepository.findOne(id);
+    return toUserDto(user);
   }
 
-  // findAll(): Promise<User[]> {
-  //   return this.usersRepository.find();
-  // }
+  async findByLogin({ email, pwd }: SignInDto): Promise<UserDto> {
+    const user = await this.usersRepository.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+    }
+
+    // compare passwords
+    // const areEqual = await comparePasswords(user.pwd, pwd);
+    const areEqual = user.pwd === pwd;
+
+    if (!areEqual) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    return toUserDto(user);
+  }
+
+  async findByPayload({ email }: any): Promise<UserDto> {
+    return await this.usersRepository.findOne({
+      where: { email },
+    });
+  }
+
+  findAll(): Promise<UserDto[]> {
+    return this.usersRepository.find();
+  }
 }

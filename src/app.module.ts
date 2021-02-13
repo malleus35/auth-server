@@ -7,15 +7,13 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
     UsersModule,
+    ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     TypeOrmModule.forRootAsync({
-      imports: [
-        ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
-      ],
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',

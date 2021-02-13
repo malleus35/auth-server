@@ -1,25 +1,26 @@
 import { Body, Controller, Get, Post, Headers, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
+import { UserDto } from './dto/UserDto';
 
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  // @Post()
-  // async signUp(@Body() user: User) {
-  //   await this.usersService.create(user);
-  // }
+  @Post()
+  async signUp(@Body() user: User) {
+    await this.usersService.create(user);
+  }
 
-  // @Delete()
-  // async deleteUser(@Headers('authorization') token: string) {
-  //   // this.usersService.delete(token);
-  // }
+  @Delete()
+  async deleteUser(@Headers('authorization') token: string) {
+    // this.usersService.delete(token);
+  }
 
-  // @Post('signin/local')
-  // async signInLocal(@Body() user: User) {
-  //   await this.usersService.signIn(user);
-  // }
+  @Post('signin/local')
+  async signInLocal(@Body() user: User) {
+    await this.usersService.signIn(user);
+  }
 
   @Post('signin/google')
   async signInGoogle() {
@@ -59,16 +60,16 @@ export class UsersController {
     // this.usersService.refresh(token, refresh);
   }
 
-  // @Get('one')
-  // async findOne(
-  //   @Headers('authorization') token: string,
-  //   @Body() idx: number,
-  // ): Promise<User> {
-  //   return this.usersService.findOne(idx);
-  // }
+  @Get('one')
+  async findOne(
+    @Headers('authorization') token: string,
+    @Body() id: string,
+  ): Promise<UserDto> {
+    return this.usersService.findById(id);
+  }
 
-  // @Get('all')
-  // findAll(): Promise<User[]> {
-  //   return this.usersService.findAll();
-  // }
+  @Get('all')
+  findAll(): Promise<UserDto[]> {
+    return this.usersService.findAll();
+  }
 }

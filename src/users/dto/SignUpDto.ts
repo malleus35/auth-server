@@ -1,5 +1,6 @@
-import { SignInDto } from './SignInDto';
-
-export class SignUpDto extends SignInDto {
-  name!: string;
+import { IsNotEmpty, IsEmail } from 'class-validator';
+export class SignUpDto {
+  @IsNotEmpty() @IsEmail() email!: string;
+  @IsNotEmpty() pwd!: string;
+  @IsNotEmpty() name!: string;
 }
