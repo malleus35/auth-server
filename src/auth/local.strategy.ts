@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from 'src/users/user.entity';
+import { SignInDto } from 'src/users/dto/SignInDto';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -10,8 +11,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super();
   }
 
-  async validate(email: string, pwd: string): Promise<User> {
-    const user = await this.authService.validateUser(email, pwd);
+  async validate(username: string, password: string): Promise<User> {
+    const user = await this.authService.validateUser(username, password);
     if (!user) {
       throw new UnauthorizedException('There is no User!');
     }
