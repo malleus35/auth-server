@@ -3,6 +3,7 @@ export default () => ({
   jwt: {
     secret: process.env.JWT_SECRET_KEY,
     issuer: process.env.JWT_ISSUER,
+    expireIn: process.env.JWT_EXPIRE_IN,
     audience: process.env.JWT_AUDIENCE,
   },
   database: {
