@@ -12,6 +12,9 @@ export class User {
   })
   email: string;
 
+  @BeforeInsert() async hashPassword() {
+    this.pwd = await bcrypt.hash(this.pwd, 10);
+  }
   @Column({
     type: 'varchar',
     nullable: false,
@@ -23,8 +26,4 @@ export class User {
     nullable: false,
   })
   name: string;
-
-  @BeforeInsert() async hashPassword() {
-    this.pwd = await bcrypt.hash(this.pwd, 10);
-  }
 }
