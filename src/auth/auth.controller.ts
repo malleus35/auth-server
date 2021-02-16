@@ -7,18 +7,18 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { User } from './user.entity';
-import { UserDto } from './dto/UserDto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RefreshDto } from './dto/RefreshDto';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/user.entity';
+import { UserDto } from '../users/dto/UserDto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RefreshDto } from '../users/dto/RefreshDto';
 import { ResForm, resTypes } from '../shared/resTypes';
 import { JwtService } from '@nestjs/jwt';
-import { getDecoded } from 'src/shared/jwtFunction';
+import { getDecoded } from '../shared/jwtFunction';
 
 //TODO 응답 상황별 실패 상황 고려하기
-@Controller('users')
-export class UsersController {
+@Controller('auth')
+export class AuthController {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
