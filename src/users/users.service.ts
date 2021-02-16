@@ -86,4 +86,8 @@ export class UsersService {
     // return await this.usersRepository.
     return refreshDto;
   }
+
+  delete(decoded: any) {
+    return this.usersRepository.delete(decoded.id);
+  }
 }

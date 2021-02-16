@@ -12,20 +12,36 @@ import { User } from './user.entity';
 import { UserDto } from './dto/UserDto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RefreshDto } from './dto/RefreshDto';
+import { ResForm, resTypes } from '../shared/resTypes';
+import { JwtService } from '@nestjs/jwt';
+import { getDecoded } from 'src/shared/jwtFunction';
 
+//TODO 응답 상황별 실패 상황 고려하기
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   @Post()
-  async signUp(@Body() user: User): Promise<void> {
-    await this.usersService.create(user);
+  async signUp(@Body() user: User): Promise<ResForm> {
+    const createdUser = await this.usersService.create(user);
+    if (createdUser) {
+      return resTypes.successRes('Sign up');
+    }
+    return resTypes.failRes(
+      500,
+      ['Internal Server Error!'],
+      'Internal Server Error',
+    );
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete()
-  async deleteUser(@Headers('authorization') token: string): Promise<void> {
-    // this.usersService.delete(token);
+  async deleteUser(@Headers('authorization') bearer: string): Promise<void> {
+    const decoded = getDecoded(bearer, this.jwtService);
+    const result = await this.usersService.delete(decoded);
   }
 
   @Post('signin/local')
@@ -58,6 +74,7 @@ export class UsersController {
     // this.usersService.signInNaver();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logOut(@Headers('authorization') token: string) {
     // this.usersService.logout(token);

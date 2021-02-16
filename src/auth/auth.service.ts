@@ -13,7 +13,6 @@ export class AuthService {
 
   async validateUser(signInDto: SignInDto): Promise<UserDto> {
     const user = await this.usersService.findByLogin(signInDto);
-    console.log(user);
     if (user) {
       return user;
     }
