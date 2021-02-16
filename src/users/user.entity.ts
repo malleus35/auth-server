@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
-import bcrypt from 'bcrypt';
+import { hash } from 'bcrypt';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -13,7 +13,7 @@ export class User {
   email: string;
 
   @BeforeInsert() async hashPassword() {
-    this.pwd = await bcrypt.hash(this.pwd, 10);
+    this.pwd = await hash(this.pwd, 10);
   }
   @Column({
     type: 'varchar',

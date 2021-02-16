@@ -15,13 +15,9 @@ export class AuthService {
     const user = await this.usersService.findByLogin(signInDto);
     console.log(user);
     if (user) {
-      //&& user.pwd === signInDto.pwd
-      //crypto module logic will be added
-      // const { pwd, ...result } = user;
       return user;
     }
     return null;
-    // return user;
   }
 
   async login(userInfo: SignInDto) {

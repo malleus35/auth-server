@@ -6,6 +6,7 @@ import { SignInDto } from './dto/SignInDto';
 import { SignUpDto } from './dto/SignUpDto';
 import { UserDto } from './dto/UserDto';
 import { User } from './user.entity';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -60,11 +61,9 @@ export class UsersService {
       throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
     }
 
-    // compare passwords
-    // const areEqual = await comparePasswords(user.pwd, pwd);
-    const areEqual = user.pwd === pwd;
+    const isRightPasswords = await compare(pwd, user.pwd);
 
-    if (!areEqual) {
+    if (!isRightPasswords) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
