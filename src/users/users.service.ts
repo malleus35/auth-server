@@ -7,6 +7,7 @@ import { SignUpDto } from './dto/SignUpDto';
 import { UserDto } from './dto/UserDto';
 import { User } from './user.entity';
 import { compare } from 'bcrypt';
+import { RefreshDto } from './dto/RefreshDto';
 
 @Injectable()
 export class UsersService {
@@ -14,6 +15,7 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
   async signIn({ email, pwd, name }: SignUpDto): Promise<UserDto> {
+    // need to modify
     // check if the user exists in the db
     const userInDb = await this.usersRepository.findOne({
       where: { email },
@@ -78,5 +80,10 @@ export class UsersService {
 
   findAll(): Promise<UserDto[]> {
     return this.usersRepository.find();
+  }
+
+  refresh(refreshDto: RefreshDto) {
+    // return await this.usersRepository.
+    return refreshDto;
   }
 }
